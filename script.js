@@ -1,23 +1,23 @@
-const MinPriorityQueue = require('@datastructures-js/priority-queue').MinPriorityQueue;
+const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
 
 function mincost(arr) {
-    if (arr.length === 0) return 0;
+    if (arr.length === 1) return 0; // If only one rope, no cost needed.
 
-    let pq = new MinPriorityQueue(); 
+    let pq = new MinPriorityQueue(); // Min-Heap for storing rope lengths
     let totalCost = 0;
 
-    // Insert all elements into the min-heap
+    // Insert all rope lengths into the min-heap
     arr.forEach(num => pq.enqueue(num));
 
+    // Process ropes until only one remains
     while (pq.size() > 1) {
-        // Extract two smallest ropes
-        let first = pq.dequeue().element;
-        let second = pq.dequeue().element;
-        
-        let cost = first + second;
-        totalCost += cost;
+        let first = pq.dequeue().element;  // Extract the smallest rope
+        let second = pq.dequeue().element; // Extract the second smallest rope
 
-        pq.enqueue(cost);
+        let cost = first + second; // Merge ropes
+        totalCost += cost; // Add cost to total
+
+        pq.enqueue(cost); // Push merged rope back into the heap
     }
 
     return totalCost;
